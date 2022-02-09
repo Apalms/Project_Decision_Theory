@@ -16,21 +16,6 @@ from xgboost import XGBClassifier
 
 
 
-
-def insertionSort(arr):
-    for i in range(1, len(arr)):
-        key = arr[i]
-
-        # Move elements of arr[0..i-1], that are
-        # greater than key, to one position ahead
-        # of their current position
-        j = i - 1
-        while j >= 0 and key < arr[j]:
-            arr[j + 1] = arr[j]
-            j -= 1
-        arr[j + 1] = key
-
-
 def svm(X_train,X_test ,y_train,  y_test):
 
     classifier = SVC(kernel='rbf')
@@ -127,7 +112,7 @@ def Random_Forest(X, y):
     print('Accuracy for test set for Random Forest = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
 
-"""def LightGBM(x_train,x_test, y_train, y_test):
+def LightGBM(x_train,x_test, y_train, y_test):
 
     d_train = lgb.Dataset(x_train, label=y_train)
     params = {}
@@ -154,7 +139,7 @@ def Random_Forest(X, y):
 
     cm_train = confusion_matrix(y_pred_train, y_train)
     print('\nAccuracy for training set for LightGBM = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
-    print('Accuracy for test set for LightGBM = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))"""
+    print('Accuracy for test set for LightGBM = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
 
 def XGBoost(X_train,X_test, y_train,y_test):
