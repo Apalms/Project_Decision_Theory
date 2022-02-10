@@ -55,7 +55,7 @@ def svm(X_train,X_test ,y_train,  y_test):
 
 def Naive_Bayes(X,y):
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.32, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
 
     classifier = GaussianNB()
@@ -77,7 +77,7 @@ def Naive_Bayes(X,y):
 
 def Logistic_Regresion(X, y):
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.32, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
     classifier = LogisticRegression(max_iter=1000)
     classifier.fit(X_train, y_train)
@@ -97,7 +97,7 @@ def Logistic_Regresion(X, y):
 
 def Decision_Tree(X, y):
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.32, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
     classifier = DecisionTreeClassifier()
     classifier.fit(X_train, y_train)
@@ -116,7 +116,7 @@ def Decision_Tree(X, y):
 
 def Random_Forest(X, y):
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.32, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
     classifier = RandomForestClassifier(n_estimators=10)
     classifier.fit(X_train, y_train)
@@ -158,7 +158,7 @@ def XGBoost(X_train,X_test, y_train,y_test):
     print('Accuracy for test set for XGBoost = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
 def Kneighbors(X, y):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.32, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
     knn_scores = []
     for k in range(1,21):
         knn_classifier = KNeighborsClassifier(n_neighbors = k)
@@ -211,7 +211,7 @@ def main():
     X = df.iloc[:, :-1].values
     Y = df.iloc[:, -1].values
 
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.32, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
 
     sc = ss()
     X_train = sc.fit_transform(X_train)
