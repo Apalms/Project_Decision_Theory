@@ -225,6 +225,6 @@ def main():
     plt.bar(x_pos, values2, color=['y', 'b', 'g', 'r', 'c'])
     plt.xticks(x_pos, names2)
     plt.show()
-
+    print(3)
 if __name__ == "__main__":
     main()
