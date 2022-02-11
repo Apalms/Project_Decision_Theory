@@ -229,8 +229,6 @@ def XGBoost(X_train,X_test, y_train,y_test):
     plt.show()
 
 
-
-
     print('\nAccuracy for training set for XGBoost = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for XGBoost = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
