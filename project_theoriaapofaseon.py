@@ -12,22 +12,17 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler as ss
-from matplotlib.cm import rainbow
-
+from sklearn.metrics import ConfusionMatrixDisplay
 from xgboost import XGBClassifier
-
+from sklearn.model_selection import validation_curve
 
 
 
 
 def svm(X_train,X_test ,y_train,  y_test):
-    svm_scores = []
-    kernels = ['linear', 'poly', 'rbf', 'sigmoid' ]
-    for i in range(len(kernels)):
-        svm_classifier =  SVC(kernel= kernels[i])
-        svm_classifier.fit(X_train, y_train)
-        svm_scores.append(svm_classifier.score(X_test,y_test))
 
+    svm_classifier =  SVC(kernel= 'rbf')
+    svm_classifier.fit(X_train, y_train)
 
     # Predicting the Test set results
     y_pred = svm_classifier.predict(X_test)
@@ -43,96 +38,160 @@ def svm(X_train,X_test ,y_train,  y_test):
     print('Accuracy for test set for svm = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
 
-    colors = rainbow(np.linspace(0, 1, len(kernels)))
-    plt.bar(kernels, svm_scores, color = colors)
-    for i in range(len(kernels)):
-        plt.text(i, svm_scores[i], svm_scores[i])
-    plt.xlabel('Kernels')
-    plt.ylabel('Scores')
-    plt.title('Support Vector Classifier scores for different kernels')
+    title = "Confusion matrix, without normalization for SVM"
+    disp = ConfusionMatrixDisplay.from_estimator(
+            svm_classifier,
+            X_test,
+            y_test,
+            cmap=plt.cm.Blues
+        )
+    disp.ax_.set_title(title)
+
+    print(title)
+    print(disp.confusion_matrix)
     plt.show()
 
+    return svm_classifier
 
 def Naive_Bayes(X,y):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
 
-    classifier = GaussianNB()
-    classifier.fit(X_train, y_train)
+    nb_classifier = GaussianNB()
+    nb_classifier.fit(X_train, y_train)
 
     # Predicting the Test set results
-    y_pred = classifier.predict(X_test)
+    y_pred =nb_classifier.predict(X_test)
 
     cm_test = confusion_matrix(y_pred, y_test)
 
-    y_pred_train = classifier.predict(X_train)
+    y_pred_train = nb_classifier.predict(X_train)
     cm_train = confusion_matrix(y_pred_train, y_train)
 
-   
+    title = "Confusion matrix, without normalization for Naive Bayes"
+
+    disp = ConfusionMatrixDisplay.from_estimator(
+            nb_classifier,
+            X_test,
+            y_test,
+            cmap=plt.cm.Blues
+        )
+    disp.ax_.set_title(title)
+
+    print(title)
+    print(disp.confusion_matrix)
+    plt.show()
 
     print('\nAccuracy for training set for Naive Bayes = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Naive Bayes = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
+    return nb_classifier
 
 def Logistic_Regresion(X, y):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    classifier = LogisticRegression(max_iter=1000)
-    classifier.fit(X_train, y_train)
+    lr_classifier = LogisticRegression(max_iter=1000)
+    lr_classifier.fit(X_train, y_train)
 
     # Predicting the Test set results
-    y_pred = classifier.predict(X_test)
+    y_pred = lr_classifier.predict(X_test)
 
     cm_test = confusion_matrix(y_pred, y_test)
 
-    y_pred_train = classifier.predict(X_train)
+    y_pred_train = lr_classifier.predict(X_train)
     cm_train = confusion_matrix(y_pred_train, y_train)
+
+
+    title = "Confusion matrix, without normalization for Logistic Regression"
+
+    disp = ConfusionMatrixDisplay.from_estimator(
+            lr_classifier,
+            X_test,
+            y_test,
+            cmap=plt.cm.Blues,
+        )
+    disp.ax_.set_title(title)
+    print(title)
+    print(disp.confusion_matrix)
+    plt.show()
 
     print('\nAccuracy for training set for Logistic Regression = {}'.format(
         (cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Logistic Regression = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
+    return lr_classifier
 
 def Decision_Tree(X, y):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    classifier = DecisionTreeClassifier()
-    classifier.fit(X_train, y_train)
+    dt_classifier = DecisionTreeClassifier()
+    dt_classifier.fit(X_train, y_train)
 
     # Predicting the Test set results
-    y_pred = classifier.predict(X_test)
+    y_pred = dt_classifier.predict(X_test)
 
     cm_test = confusion_matrix(y_pred, y_test)
 
-    y_pred_train = classifier.predict(X_train)
+    y_pred_train = dt_classifier.predict(X_train)
     cm_train = confusion_matrix(y_pred_train, y_train)
+
+
+    title = "Confusion matrix, without normalization for Decision Tree"
+    disp = ConfusionMatrixDisplay.from_estimator(
+            dt_classifier,
+            X_test,
+            y_test,
+            cmap=plt.cm.Blues,
+        )
+    disp.ax_.set_title(title)
+    print(title)
+    print(disp.confusion_matrix)
+    plt.show()
+
 
     print('\nAccuracy for training set for Decision Tree = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Decision Tree = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
+    return dt_classifier
 
 def Random_Forest(X, y):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    classifier = RandomForestClassifier(n_estimators=10)
-    classifier.fit(X_train, y_train)
+    rf_classifier = RandomForestClassifier(n_estimators=10)
+    rf_classifier.fit(X_train, y_train)
 
     # Predicting the Test set results
-    y_pred = classifier.predict(X_test)
+    y_pred = rf_classifier.predict(X_test)
 
     cm_test = confusion_matrix(y_pred, y_test)
 
-    y_pred_train = classifier.predict(X_train)
+    y_pred_train = rf_classifier.predict(X_train)
     cm_train = confusion_matrix(y_pred_train, y_train)
+
+
+    title = "Confusion matrix, without normalization for Random Forest"
+
+    disp = ConfusionMatrixDisplay.from_estimator(
+            rf_classifier,
+            X_test,
+            y_test,
+            cmap=plt.cm.Blues
+        )
+    disp.ax_.set_title(title)
+
+    print(title)
+    print(disp.confusion_matrix)
+    plt.show()
+
 
     print('\nAccuracy for training set for Random Forest = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Random Forest = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
-
+    return rf_classifier
 
 
 def XGBoost(X_train,X_test, y_train,y_test):
@@ -154,16 +213,35 @@ def XGBoost(X_train,X_test, y_train,y_test):
             y_pred_train[i] = 0
 
     cm_train = confusion_matrix(y_pred_train, y_train)
+
+
+    title = "Confusion matrix, without normalization for XGBoost"
+
+    disp = ConfusionMatrixDisplay.from_estimator(
+            xg,
+            X_test,
+            y_test,
+            cmap=plt.cm.Blues
+        )
+    disp.ax_.set_title(title)
+    print(title)
+    print(disp.confusion_matrix)
+    plt.show()
+
+
+
+
     print('\nAccuracy for training set for XGBoost = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for XGBoost = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
+    return xg
+
 def Kneighbors(X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
-    knn_scores = []
-    for k in range(1,21):
-        knn_classifier = KNeighborsClassifier(n_neighbors = k)
-        knn_classifier.fit(X_train,y_train)
-        knn_scores.append(knn_classifier.score(X_test,y_test))
+
+    knn_classifier = KNeighborsClassifier(n_neighbors = 10)
+    knn_classifier.fit(X_train,y_train)
+
 
     # Predicting the Test set results
     y_pred = knn_classifier.predict(X_test)
@@ -173,13 +251,58 @@ def Kneighbors(X, y):
     y_pred_train = knn_classifier.predict(X_train)
     cm_train = confusion_matrix(y_pred_train, y_train)
 
+
+    title = "Confusion matrix, without normalization for KNN"
+    disp = ConfusionMatrixDisplay.from_estimator(
+            knn_classifier,
+            X_test,
+            y_test,
+            cmap=plt.cm.Blues,
+        )
+    disp.ax_.set_title(title)
+    print(title)
+    print(disp.confusion_matrix)
+    plt.show()
+
+    # Setting the range for the parameter (from 1 to 10)
+    parameter_range = np.arange(1, 10, 1)
+
+    # Calculate accuracy on training and test set using the
+    # gamma parameter with 5-fold cross validation
+    train_score, test_score = validation_curve(KNeighborsClassifier(), X, y,
+                                               param_name = "n_neighbors",
+                                               param_range = parameter_range,
+                                               cv = 5, scoring = "accuracy")
+    # Calculating mean and standard deviation of training score
+    mean_train_score = np.mean(train_score, axis = 1)
+    std_train_score = np.std(train_score, axis = 1)
+
+    # Calculating mean and standard deviation of testing score
+    mean_test_score = np.mean(test_score, axis = 1)
+    std_test_score = np.std(test_score, axis = 1)
+
+    # Plot mean accuracy scores for training and testing scores
+    plt.plot(parameter_range, mean_train_score,
+         label = "Training Score", color = 'b')
+    plt.plot(parameter_range, mean_test_score,
+         label = "Cross Validation Score", color = 'g')
+
+    # Creating the plot
+    plt.title("Validation Curve with KNN Classifier")
+    plt.xlabel("Number of Neighbours")
+    plt.ylabel("Accuracy")
+    plt.tight_layout()
+    plt.legend(loc = 'best')
+    plt.show()
+
+
+
     print('\nAccuracy for training set for Kneighbors = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Kneighbors = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
+    return knn_classifier
+
 def main():
-
-
-
 
     df = pd.read_csv("Dataset 1.csv", delimiter=",")
     df.columns = ['age', 'sex', 'cp', 'trestbps', 'chol',
@@ -218,28 +341,42 @@ def main():
     X_test = sc.transform(X_test)
 
     #  SVM
-    svm(X_train, X_test, y_train,  y_test)
+    svm_classifier = svm(X_train, X_test, y_train,  y_test)
 
 
     #  Naive Bayes
-    Naive_Bayes(X, Y)
+    nv_classifier = Naive_Bayes(X, Y)
 
     #  Logistic Regression
-    Logistic_Regresion(X, Y)
+    lr_classifier = Logistic_Regresion(X, Y)
 
     #  Decision Tree
-    Decision_Tree(X, Y)
+    dt_classifier = Decision_Tree(X, Y)
 
     # Random Forest
-    Random_Forest(X,Y)
-
+    rf_classifier = Random_Forest(X,Y)
 
     # applying XGBoost
-    XGBoost(X_train, X_test, y_train, y_test)
+    xgb_classifier = XGBoost(X_train, X_test, y_train, y_test)
 
     #Kneighbors Classifier
-    Kneighbors(X, Y)
+    kn_classifier = Kneighbors(X, Y)
 
+    test = [[100, 1, 3, 160, 250, 1, 0, 180, 0, 4, 0, 0, 3],
+            [100, 1, 3, 180, 300, 1, 0, 200, 0, 3, 0, 0, 3]]
+
+    test = sc.fit_transform(test)
+
+    for i in range(len(test)):
+        print(f"Patient {i} is: \n")
+        print(f"\t SVM: {svm_classifier.predict([test[i]])}" )
+        print(f"\t Naive Bayes: {nv_classifier.predict([test[i]])}")
+        print(f"\t Logistic Regression: {lr_classifier.predict([test[i]])}")
+        print(f"\t Decision Tree: {dt_classifier.predict([test[i]])}")
+        print(f"\t Random Forest: {rf_classifier.predict([test[i]])}")
+        print(f"\t XGBoost: {xgb_classifier.predict([test[i]])}")
+        print(f"\t KNeighbors: {kn_classifier.predict([test[i]])}")
+        print()
 
 if __name__ == "__main__":
     main()
