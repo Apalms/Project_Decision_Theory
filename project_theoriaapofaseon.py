@@ -15,8 +15,13 @@ from sklearn.preprocessing import StandardScaler as ss
 from sklearn.metrics import ConfusionMatrixDisplay
 from xgboost import XGBClassifier
 from sklearn.model_selection import validation_curve
-
-
+from numpy import mean
+from numpy import std
+from sklearn.datasets import make_classification
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
 
 
 def svm(X_train,X_test ,y_train,  y_test):
@@ -26,7 +31,6 @@ def svm(X_train,X_test ,y_train,  y_test):
 
     # Predicting the Test set results
     y_pred = svm_classifier.predict(X_test)
-
 
     cm_test = confusion_matrix(y_pred, y_test)
 
@@ -52,8 +56,9 @@ def svm(X_train,X_test ,y_train,  y_test):
 
     return svm_classifier
 
-def Naive_Bayes(X,y):
 
+def Naive_Bayes(X,y):
+    # Calculate X_train, X_test, y_train, y_test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
 
@@ -87,8 +92,9 @@ def Naive_Bayes(X,y):
 
     return nb_classifier
 
-def Logistic_Regresion(X, y):
 
+def Logistic_Regresion(X, y):
+    # Calculate X_train, X_test, y_train, y_test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
     lr_classifier = LogisticRegression(max_iter=1000)
@@ -122,8 +128,9 @@ def Logistic_Regresion(X, y):
 
     return lr_classifier
 
-def Decision_Tree(X, y):
 
+def Decision_Tree(X, y):
+    # Calculate X_train, X_test, y_train, y_test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
     dt_classifier = DecisionTreeClassifier()
@@ -156,8 +163,9 @@ def Decision_Tree(X, y):
 
     return dt_classifier
 
-def Random_Forest(X, y):
 
+def Random_Forest(X, y):
+    # Calculate X_train, X_test, y_train, y_test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
     rf_classifier = RandomForestClassifier(n_estimators=10)
@@ -190,11 +198,28 @@ def Random_Forest(X, y):
     print('\nAccuracy for training set for Random Forest = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Random Forest = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
+    # configure the cross-validation procedure
+    cv_inner = KFold(n_splits=3, shuffle=True, random_state=1)
+    # define the model
+    model = RandomForestClassifier(random_state=1)
+    # define search space
+    space = dict()
+    space['n_estimators'] = [10, 100, 500]
+    space['max_features'] = [2, 4, 6]
+    # define search
+    search = GridSearchCV(model, space, scoring='accuracy', n_jobs=1, cv=cv_inner, refit=True)
+    # configure the cross-validation procedure
+    cv_outer = KFold(n_splits=10, shuffle=True, random_state=1)
+    # execute the nested cross-validation
+    scores = cross_val_score(search, X, y, scoring='accuracy', cv=cv_outer, n_jobs=-1)
+    # report performance
+    print('Accuracy: %.3f (%.3f)' % (mean(scores), std(scores)))
+
     return rf_classifier
 
 
 def XGBoost(X_train,X_test, y_train,y_test):
-    # from sklearn.model_selection import train_test_split
+
     # X_train, X_test, y_train, y_test = train_test_split(X, target, test_size = 0.20, random_state = 0)
 
     xg = XGBClassifier(use_label_encoder=False)
@@ -363,7 +388,7 @@ def main():
             [100, 1, 3, 180, 300, 1, 0, 200, 0, 3, 0, 0, 3]]
 
     test = sc.fit_transform(test)
-
+    #Test models for 2 cases
     for i in range(len(test)):
         print(f"Patient {i} is: \n")
         print(f"\t SVM: {svm_classifier.predict([test[i]])}" )
