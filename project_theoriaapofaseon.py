@@ -1,3 +1,4 @@
+#imported some libraries
 import pandas as pd
 import math
 import matplotlib.pyplot as plt
@@ -23,47 +24,47 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 
+#we made a function for the Support Vector Machine algorithm
+def svm(X_train,X_test ,y_train,  y_test): # takes as arguments X_train,X_test, y_train, y_test
 
-def svm(X_train,X_test ,y_train,  y_test):
-
-    svm_classifier =  SVC(kernel= 'rbf')
-    svm_classifier.fit(X_train, y_train)
+    svm_classifier =  SVC(kernel= 'rbf') #call fuction SVC with kernel Radial Basis Function (rbf) with parameters gamma and C
+    svm_classifier.fit(X_train, y_train) # takes the training data as arguments to achieve better accuracy
 
     # Predicting the Test set results
-    y_pred = svm_classifier.predict(X_test)
+    y_pred = svm_classifier.predict(X_test) #enables to predict the labels of the data on the basis of the trained model
 
-    cm_test = confusion_matrix(y_pred, y_test)
+    cm_test = confusion_matrix(y_pred, y_test) # measure the performance of Support Vector Machine algorithm
 
     y_pred_train = svm_classifier.predict(X_train)
     cm_train = confusion_matrix(y_pred_train, y_train)
 
-
+    #print the accuracy of training set for SVM and the accuracy test set
     print('\nAccuracy for training set for svm = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for svm = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
-    title = "Confusion matrix, without normalization for SVM"
-    disp = ConfusionMatrixDisplay.from_estimator(
+    title = "Confusion matrix, without normalization for SVM" #define the title of confusion matrix
+    disp = ConfusionMatrixDisplay.from_estimator( #we call ConfusionMatrixDisplay function with some arguments to create the confusion matrix
             svm_classifier,
             X_test,
             y_test,
-            cmap=plt.cm.Blues
+            cmap=plt.cm.Blues #we set color blue for the confusion matrix
         )
     disp.ax_.set_title(title)
 
-    print(title)
+    print(title)#display the title of confusion matrix
     print(disp.confusion_matrix)
-    plt.show()
+    plt.show() #show the confusion matrix
 
-    return svm_classifier
+    return svm_classifier #we return svm_classifier
 
-
+#we made a function for the Naive Bayes algorithm
 def Naive_Bayes(X,y):
     # Calculate X_train, X_test, y_train, y_test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
 
-    nb_classifier = GaussianNB()
-    nb_classifier.fit(X_train, y_train)
+    nb_classifier = GaussianNB() #classify the multivariate Gaussian model
+    nb_classifier.fit(X_train, y_train)# takes the training data as arguments to achieve better accuracy
 
     # Predicting the Test set results
     y_pred =nb_classifier.predict(X_test)
@@ -73,32 +74,32 @@ def Naive_Bayes(X,y):
     y_pred_train = nb_classifier.predict(X_train)
     cm_train = confusion_matrix(y_pred_train, y_train)
 
-    title = "Confusion matrix, without normalization for Naive Bayes"
-
+    title = "Confusion matrix, without normalization for Naive Bayes" #define the title of confusion matrix
+    #we call ConfusionMatrixDisplay function with some arguments to create the confusion matrix
     disp = ConfusionMatrixDisplay.from_estimator(
             nb_classifier,
             X_test,
             y_test,
-            cmap=plt.cm.Blues
+            cmap=plt.cm.Blues #we set color blue for the confusion matrix
         )
     disp.ax_.set_title(title)
 
-    print(title)
+    print(title) #display the title of confusion matrix
     print(disp.confusion_matrix)
-    plt.show()
-
+    plt.show()#show the confusion matrix
+    #print the accuracy of training set for Naive Bayes and the accuracy test set
     print('\nAccuracy for training set for Naive Bayes = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Naive Bayes = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
-    return nb_classifier
+    return nb_classifier #we return nb_classifier
 
-
+#we made a function for the Logistic Regression algorithm
 def Logistic_Regresion(X, y):
     # Calculate X_train, X_test, y_train, y_test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    lr_classifier = LogisticRegression(max_iter=1000)
-    lr_classifier.fit(X_train, y_train)
+    lr_classifier = LogisticRegression(max_iter=1000) #classify with maximum iterations 1000 for the solvers to converge
+    lr_classifier.fit(X_train, y_train) #takes the training data as arguments to achieve better accuracy
 
     # Predicting the Test set results
     y_pred = lr_classifier.predict(X_test)
@@ -109,32 +110,32 @@ def Logistic_Regresion(X, y):
     cm_train = confusion_matrix(y_pred_train, y_train)
 
 
-    title = "Confusion matrix, without normalization for Logistic Regression"
-
+    title = "Confusion matrix, without normalization for Logistic Regression" #define the title of confusion matrix
+    #we call ConfusionMatrixDisplay function with some arguments to create the confusion matrix
     disp = ConfusionMatrixDisplay.from_estimator(
             lr_classifier,
             X_test,
             y_test,
-            cmap=plt.cm.Blues,
+            cmap=plt.cm.Blues  #we set color blue for the confusion matrix
         )
     disp.ax_.set_title(title)
-    print(title)
+    print(title) #display the title of confusion matrix
     print(disp.confusion_matrix)
-    plt.show()
-
+    plt.show()#show the confusion matrix
+    #print the accuracy of training set for Logistic Regression and the accuracy test set
     print('\nAccuracy for training set for Logistic Regression = {}'.format(
         (cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Logistic Regression = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
-    return lr_classifier
+    return lr_classifier #we return lr_classifier
 
-
+#we made a function for the Decision Tree algorithm
 def Decision_Tree(X, y):
     # Calculate X_train, X_test, y_train, y_test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    dt_classifier = DecisionTreeClassifier()
-    dt_classifier.fit(X_train, y_train)
+    dt_classifier = DecisionTreeClassifier()#measure the quality of a split
+    dt_classifier.fit(X_train, y_train)#takes the training data as arguments to achieve better accuracy
 
     # Predicting the Test set results
     y_pred = dt_classifier.predict(X_test)
@@ -145,31 +146,32 @@ def Decision_Tree(X, y):
     cm_train = confusion_matrix(y_pred_train, y_train)
 
 
-    title = "Confusion matrix, without normalization for Decision Tree"
-    disp = ConfusionMatrixDisplay.from_estimator(
+    title = "Confusion matrix, without normalization for Decision Tree"#define the title of confusion matrix
+    disp = ConfusionMatrixDisplay.from_estimator(  #we call ConfusionMatrixDisplay function with some arguments to create the confusion matrix
             dt_classifier,
             X_test,
             y_test,
-            cmap=plt.cm.Blues,
+            cmap=plt.cm.Blues,#we set color blue for the confusion matrix
         )
     disp.ax_.set_title(title)
-    print(title)
+    print(title) #display the title of confusion matrix
     print(disp.confusion_matrix)
-    plt.show()
+    plt.show()#show the confusion matrix
 
-
+    #print the accuracy of training set for Decision Tree and the accuracy test set
     print('\nAccuracy for training set for Decision Tree = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Decision Tree = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
-    return dt_classifier
+    return dt_classifier #we return dt_classifier
 
-
+#we made a function for the Random Forest algorithm
 def Random_Forest(X, y):
     # Calculate X_train, X_test, y_train, y_test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    rf_classifier = RandomForestClassifier(n_estimators=10)
-    rf_classifier.fit(X_train, y_train)
+    rf_classifier = RandomForestClassifier(n_estimators=10)#meta estimator that fits a number of decision tree classifiers.
+    # We have 10 estimators=> we have 10 trees that we want to build before taking the maximum voting or averages of predictions
+    rf_classifier.fit(X_train, y_train)#takes the training data as arguments to achieve better accuracy
 
     # Predicting the Test set results
     y_pred = rf_classifier.predict(X_test)
@@ -180,21 +182,21 @@ def Random_Forest(X, y):
     cm_train = confusion_matrix(y_pred_train, y_train)
 
 
-    title = "Confusion matrix, without normalization for Random Forest"
-
+    title = "Confusion matrix, without normalization for Random Forest" #define the title of confusion matrix
+    #we call ConfusionMatrixDisplay function with some arguments to create the confusion matrix
     disp = ConfusionMatrixDisplay.from_estimator(
             rf_classifier,
             X_test,
             y_test,
-            cmap=plt.cm.Blues
+            cmap=plt.cm.Blues#we set color blue for the confusion matrix
         )
     disp.ax_.set_title(title)
 
-    print(title)
+    print(title)#display the title of confusion matrix
     print(disp.confusion_matrix)
-    plt.show()
+    plt.show()#show the confusion matrix
 
-
+    #print the accuracy of training set for Random Forest and the accuracy test set
     print('\nAccuracy for training set for Random Forest = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Random Forest = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
@@ -215,15 +217,15 @@ def Random_Forest(X, y):
     # report performance
     print('Accuracy: %.3f (%.3f)' % (mean(scores), std(scores)))
 
-    return rf_classifier
+    return rf_classifier #renturn rf_classifier
 
+#we made a function for the XGBoost algorithm
+def XGBoost(X_train,X_test, y_train,y_test):# takes as arguments X_train,X_test, y_train, y_test
 
-def XGBoost(X_train,X_test, y_train,y_test):
+    xg = XGBClassifier(use_label_encoder=False) #remove user warning that comes while running XGBClassifier.
+    xg.fit(X_train, y_train)#takes the training data as arguments to achieve better accuracy
 
-    # X_train, X_test, y_train, y_test = train_test_split(X, target, test_size = 0.20, random_state = 0)
-
-    xg = XGBClassifier(use_label_encoder=False)
-    xg.fit(X_train, y_train)
+    # Predicting the Test set results
     y_pred = xg.predict(X_test)
 
     cm_test = confusion_matrix(y_pred, y_test)
@@ -239,30 +241,32 @@ def XGBoost(X_train,X_test, y_train,y_test):
     cm_train = confusion_matrix(y_pred_train, y_train)
 
 
-    title = "Confusion matrix, without normalization for XGBoost"
-
+    title = "Confusion matrix, without normalization for XGBoost"#define the title of confusion matrix
+    #we call ConfusionMatrixDisplay function with some arguments to create the confusion matrix
     disp = ConfusionMatrixDisplay.from_estimator(
             xg,
             X_test,
             y_test,
-            cmap=plt.cm.Blues
+            cmap=plt.cm.Blues#we set color blue for the confusion matrix
         )
     disp.ax_.set_title(title)
-    print(title)
+    print(title)#display the title of confusion matrix
     print(disp.confusion_matrix)
-    plt.show()
+    plt.show()#show the confusion matrix
 
-
+    #print the accuracy of training set for XGBoost  and the accuracy test set
     print('\nAccuracy for training set for XGBoost = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for XGBoost = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
-    return xg
+    return xg #return xg
 
+#we made a function for the KNN algorithm
 def Kneighbors(X, y):
+    # Calculate X_train, X_test, y_train, y_test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    knn_classifier = KNeighborsClassifier(n_neighbors = 10)
-    knn_classifier.fit(X_train,y_train)
+    knn_classifier = KNeighborsClassifier(n_neighbors = 10)# tell the classifier to use Euclidean distance for determining the proximity between neighboring points
+    knn_classifier.fit(X_train,y_train)#takes the training data as arguments to achieve better accuracy
 
 
     # Predicting the Test set results
@@ -274,17 +278,17 @@ def Kneighbors(X, y):
     cm_train = confusion_matrix(y_pred_train, y_train)
 
 
-    title = "Confusion matrix, without normalization for KNN"
-    disp = ConfusionMatrixDisplay.from_estimator(
+    title = "Confusion matrix, without normalization for KNN"#define the title of confusion matrix
+    disp = ConfusionMatrixDisplay.from_estimator( #we call ConfusionMatrixDisplay function with some arguments to create the confusion matrix
             knn_classifier,
             X_test,
             y_test,
-            cmap=plt.cm.Blues,
+            cmap=plt.cm.Blues,#we set color blue for the confusion matrix
         )
     disp.ax_.set_title(title)
-    print(title)
+    print(title)#display the title of confusion matrix
     print(disp.confusion_matrix)
-    plt.show()
+    plt.show()#show the confusion matrix
 
     # Setting the range for the parameter (from 1 to 10)
     parameter_range = np.arange(1, 10, 1)
@@ -317,29 +321,26 @@ def Kneighbors(X, y):
     plt.legend(loc = 'best')
     plt.show()
 
-
-
+    #print the accuracy of training set for KNN  and the accuracy test set
     print('\nAccuracy for training set for Kneighbors = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Kneighbors = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
-    return knn_classifier
+    return knn_classifier #return knn_classifier
 
 def main():
 
-    df = pd.read_csv("Dataset 1.csv", delimiter=",")
+    df = pd.read_csv("Dataset 1.csv", delimiter=",") #read the dataset
     df.columns = ['age', 'sex', 'cp', 'trestbps', 'chol',
                   'fbs', 'restecg', 'thalach', 'exang',
-                  'oldpeak', 'slope', 'ca', 'thal', 'target']
-    df.isnull().sum()
+                  'oldpeak', 'slope', 'ca', 'thal', 'target'] #we define the labales of each column
+    df.isnull().sum()#returns the number of missing values in the data set.
 
-    df['target'] = df.target.map({0: 0, 1: 1, 2: 1, 3: 1, 4: 1})
-    df['sex'] = df.sex.map({0: 'female', 1: 'male'})
-    df['thal'] = df.thal.fillna(df.thal.mean())
-    df['ca'] = df.ca.fillna(df.ca.mean())
+    df['target'] = df.target.map({0: 0, 1: 1})#we mapping the target 0 as 0, 1 as 1
+    df['sex'] = df.sex.map({0: 'female', 1: 'male'})#we map 0 as female and 1 as male
+    df['thal'] = df.thal.fillna(df.thal.mean()) #replace each NaN value with the mean of thal
+    df['ca'] = df.ca.fillna(df.ca.mean()) #replace each NaN value with the mean of ca
 
     #plots
-
-
     sns.set_context("paper", font_scale = 1, rc = {"font.size": 18,"axes.titlesize": 20,"axes.labelsize": 20})
     sns.catplot(kind = 'count', data = df, x = 'age', hue = 'target', order = df['age'].sort_values().unique())
     plt.title('Variation of Age for each target class')
@@ -356,11 +357,12 @@ def main():
     X = df.iloc[:, :-1].values
     Y = df.iloc[:, -1].values
 
+    # Calculate X_train, X_test, y_train, y_test
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
 
-    sc = ss()
-    X_train = sc.fit_transform(X_train)
-    X_test = sc.transform(X_test)
+    sc = ss()#Create a state space system.
+    X_train = sc.fit_transform(X_train) #training data so that we can scale the training data and also learn the scaling parameters of that data.
+    X_test = sc.transform(X_test) #transforming all the features using the respective mean and variance.
 
     #  SVM
     svm_classifier = svm(X_train, X_test, y_train,  y_test)
@@ -389,7 +391,8 @@ def main():
 
     test = sc.fit_transform(test)
     #Test models for 2 cases
-    for i in range(len(test)):
+
+    for i in range(len(test)): #print target for each algorithm that tell us if a patient suffers from heart disease
         print(f"Patient {i} is: \n")
         print(f"\t SVM: {svm_classifier.predict([test[i]])}" )
         print(f"\t Naive Bayes: {nv_classifier.predict([test[i]])}")
