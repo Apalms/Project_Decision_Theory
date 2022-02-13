@@ -23,6 +23,8 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
+from sklearn import metrics
+
 
 #we made a function for the Support Vector Machine algorithm
 def svm(X_train,X_test ,y_train,  y_test): # takes as arguments X_train,X_test, y_train, y_test
@@ -38,7 +40,11 @@ def svm(X_train,X_test ,y_train,  y_test): # takes as arguments X_train,X_test, 
     y_pred_train = svm_classifier.predict(X_train)
     cm_train = confusion_matrix(y_pred_train, y_train)
 
-    #print the accuracy of training set for SVM and the accuracy test set
+    #print metrics for SVM
+    print('Mean Absolute Error:',metrics.mean_absolute_error(y_test,y_pred))
+    print('Mean Squared Error:',metrics.mean_squared_error(y_test,y_pred))
+    print('Root Mean Squared Error:',np.sqrt(metrics.mean_absolute_error(y_test,y_pred)))
+     #print the accuracy of training set for SVM and the accuracy test set
     print('\nAccuracy for training set for svm = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for svm = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
 
@@ -87,6 +93,11 @@ def Naive_Bayes(X,y):
     print(title) #display the title of confusion matrix
     print(disp.confusion_matrix)
     plt.show()#show the confusion matrix
+
+    #print metrics for Naive Bayes
+    print('Mean Absolute Error:',metrics.mean_absolute_error(y_test,y_pred))
+    print('Mean Squared Error:',metrics.mean_squared_error(y_test,y_pred))
+    print('Root Mean Squared Error:',np.sqrt(metrics.mean_absolute_error(y_test,y_pred)))
     #print the accuracy of training set for Naive Bayes and the accuracy test set
     print('\nAccuracy for training set for Naive Bayes = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Naive Bayes = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
@@ -122,6 +133,11 @@ def Logistic_Regresion(X, y):
     print(title) #display the title of confusion matrix
     print(disp.confusion_matrix)
     plt.show()#show the confusion matrix
+
+    #print metrics for Logistic Regression
+    print('Mean Absolute Error:',metrics.mean_absolute_error(y_test,y_pred))
+    print('Mean Squared Error:',metrics.mean_squared_error(y_test,y_pred))
+    print('Root Mean Squared Error:',np.sqrt(metrics.mean_absolute_error(y_test,y_pred)))
     #print the accuracy of training set for Logistic Regression and the accuracy test set
     print('\nAccuracy for training set for Logistic Regression = {}'.format(
         (cm_train[0][0] + cm_train[1][1]) / len(y_train)))
@@ -158,6 +174,10 @@ def Decision_Tree(X, y):
     print(disp.confusion_matrix)
     plt.show()#show the confusion matrix
 
+    #print metrics for Decision Tree
+    print('Mean Absolute Error:',metrics.mean_absolute_error(y_test,y_pred))
+    print('Mean Squared Error:',metrics.mean_squared_error(y_test,y_pred))
+    print('Root Mean Squared Error:',np.sqrt(metrics.mean_absolute_error(y_test,y_pred)))
     #print the accuracy of training set for Decision Tree and the accuracy test set
     print('\nAccuracy for training set for Decision Tree = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Decision Tree = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
@@ -196,6 +216,10 @@ def Random_Forest(X, y):
     print(disp.confusion_matrix)
     plt.show()#show the confusion matrix
 
+    #print metrics for Random Forest
+    print('Mean Absolute Error:',metrics.mean_absolute_error(y_test,y_pred))
+    print('Mean Squared Error:',metrics.mean_squared_error(y_test,y_pred))
+    print('Root Mean Squared Error:',np.sqrt(metrics.mean_absolute_error(y_test,y_pred)))
     #print the accuracy of training set for Random Forest and the accuracy test set
     print('\nAccuracy for training set for Random Forest = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Random Forest = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
@@ -254,6 +278,10 @@ def XGBoost(X_train,X_test, y_train,y_test):# takes as arguments X_train,X_test,
     print(disp.confusion_matrix)
     plt.show()#show the confusion matrix
 
+    #print metrics for XGBoost
+    print('Mean Absolute Error:',metrics.mean_absolute_error(y_test,y_pred))
+    print('Mean Squared Error:',metrics.mean_squared_error(y_test,y_pred))
+    print('Root Mean Squared Error:',np.sqrt(metrics.mean_absolute_error(y_test,y_pred)))
     #print the accuracy of training set for XGBoost  and the accuracy test set
     print('\nAccuracy for training set for XGBoost = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for XGBoost = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
@@ -321,6 +349,10 @@ def Kneighbors(X, y):
     plt.legend(loc = 'best')
     plt.show()
 
+    #print metrics for KNN
+    print('Mean Absolute Error:',metrics.mean_absolute_error(y_test,y_pred))
+    print('Mean Squared Error:',metrics.mean_squared_error(y_test,y_pred))
+    print('Root Mean Squared Error:',np.sqrt(metrics.mean_absolute_error(y_test,y_pred)))
     #print the accuracy of training set for KNN  and the accuracy test set
     print('\nAccuracy for training set for Kneighbors = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
     print('Accuracy for test set for Kneighbors = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(y_test)))
@@ -333,12 +365,11 @@ def main():
     df.columns = ['age', 'sex', 'cp', 'trestbps', 'chol',
                   'fbs', 'restecg', 'thalach', 'exang',
                   'oldpeak', 'slope', 'ca', 'thal', 'target'] #we define the labales of each column
-    df.isnull().sum()#returns the number of missing values in the data set.
+    print(df.isnull().sum())#returns the number of missing values in the dataset.
 
-    df['target'] = df.target.map({0: 0, 1: 1})#we mapping the target 0 as 0, 1 as 1
+
     df['sex'] = df.sex.map({0: 'female', 1: 'male'})#we map 0 as female and 1 as male
-    df['thal'] = df.thal.fillna(df.thal.mean()) #replace each NaN value with the mean of thal
-    df['ca'] = df.ca.fillna(df.ca.mean()) #replace each NaN value with the mean of ca
+
 
     #plots
     sns.set_context("paper", font_scale = 1, rc = {"font.size": 18,"axes.titlesize": 20,"axes.labelsize": 20})
@@ -386,8 +417,8 @@ def main():
     #Kneighbors Classifier
     kn_classifier = Kneighbors(X, Y)
 
-    test = [[100, 1, 3, 160, 250, 1, 0, 180, 0, 4, 0, 0, 3],
-            [100, 1, 3, 180, 300, 1, 0, 200, 0, 3, 0, 0, 3]]
+    test = [[65, 1, 0, 200, 250, 1, 1, 180, 1, 2.5, 2, 3, 3],
+            [100, 1, 0, 200, 300, 1, 2, 200, 1, 2.5, 2, 3, 3]]
 
     test = sc.fit_transform(test)
     #Test models for 2 cases
