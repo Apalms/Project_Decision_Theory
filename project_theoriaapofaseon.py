@@ -418,10 +418,13 @@ def main():
     kn_classifier = Kneighbors(X, Y)
 
     test = [[65, 1, 0, 200, 250, 1, 1, 180, 1, 2.5, 2, 3, 3],
-            [100, 1, 0, 200, 300, 1, 2, 200, 1, 2.5, 2, 3, 3]]
+            [100, 1, 0, 200, 300, 1, 2, 200, 1, 2.5, 2, 3, 3],
+            [52, 1, 0, 200, 150, 1, 0, 150, 1, 2.3, 0, 1, 3],
+            [45, 0, 3, 130, 200, 1, 2, 180,0 ,2.1, 2, 1 ,3],
+            [55, 1, 3, 180, 140, 0, 2, 180,0 ,2.5, 2, 3 ,3]]
 
     test = sc.fit_transform(test)
-    #Test models for 2 cases
+    #Test models for 5 cases
 
     for i in range(len(test)): #print target for each algorithm that tell us if a patient suffers from heart disease
         print(f"Patient {i} is: \n")
